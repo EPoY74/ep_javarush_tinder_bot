@@ -24,7 +24,8 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     public void onUpdateEventReceived(Update update) {
         //TODO: основной функционал бота будем писать здесь
         // Выводим сообщение от бота
-        sendTextMessage("Привет");
+        sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
+        sendTextMessage("_Привет_");  // Делаю текст наклонным в телеграмме
 
         // Принимаем на вход сообщение, которое пишет пользователь
         String inputMessage = getMessageText();
@@ -32,6 +33,16 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         sendTextMessage("Это вы написали такое: " + inputMessage + "?");
         //Тоже выывели еще одно сообщение, для тренировки
         sendTextMessage("Что нового?");
+
+        // выводим сообщение с кнопками
+        sendTextButtonsMessage(
+                "У вас все хорошо?!",
+                "Да!!!", "yesButton",
+                "Нет!! :((" , "stopButton"
+
+        );
+        // Высылаем фотосообщение
+        sendPhotoMessage("avatar_main");
 
     }
 
