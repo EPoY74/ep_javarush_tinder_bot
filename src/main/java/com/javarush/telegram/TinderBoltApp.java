@@ -24,7 +24,6 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     public void onUpdateEventReceived(Update update) {
         //TODO: основной функционал бота будем писать здесь
         // Выводим сообщение от бота
-
         // Принимаем на вход сообщение, которое пишет пользователь
         String inputMessage = getMessageText();
         if(inputMessage.equals("/start")) {
@@ -36,23 +35,17 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return; // После этой команды ничего не  ъвыполняетс дальше, так как идет
             // выход? к началу класса? onUpdateEventReceived
         }
-
         String buttonPressed = getCallbackQueryButtonKey();
         if (buttonPressed.equals("noButton")){
             sendTextMessage("Вы нажали кнопку Нет");
             return;
         }
-
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
         sendTextMessage("_Привет_");  // Делаю текст наклонным в телеграмме
-
-
-
         // И выводим его на жкран
         // sendTextMessage("Это вы написали такое: " + inputMessage + "?"); //Пока не нужно
         //Тоже выывели еще одно сообщение, для тренировки
         sendTextMessage("Что нового?");
-
         // выводим сообщение с кнопками
         sendTextButtonsMessage(
                 "У вас все хорошо?!",
@@ -60,10 +53,6 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                 "Нет!! :((" , "noButton"
 
         );
-
-
-
-
     }
 
     public static void main(String[] args) throws TelegramApiException {
