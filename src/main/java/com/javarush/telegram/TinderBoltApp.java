@@ -30,8 +30,9 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         if(inputMessage.equals("/start")) {
             // Высылаем фотосообщение
             sendPhotoMessage("main");
-//            String greetingText = loadMessage("main");
-            sendTextMessage("Привет это мой чат бот!");
+            // Читаем файл с командами и выводим его пользователю
+            String greetingText = loadMessage("main");
+            sendTextMessage(greetingText);
             return; // После этой команды ничего не  ъвыполняетс дальше, так как идет
             // выход? к началу класса? onUpdateEventReceived
         }
