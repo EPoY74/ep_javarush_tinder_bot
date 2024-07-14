@@ -24,13 +24,22 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     public void onUpdateEventReceived(Update update) {
         //TODO: основной функционал бота будем писать здесь
         // Выводим сообщение от бота
-        sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
-        sendTextMessage("_Привет_");  // Делаю текст наклонным в телеграмме
 
         // Принимаем на вход сообщение, которое пишет пользователь
         String inputMessage = getMessageText();
+
+        sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
+        sendTextMessage("_Привет_");  // Делаю текст наклонным в телеграмме
+
+        if(inputMessage.equals("/start")) {
+            // Высылаем фотосообщение
+            sendPhotoMessage("avatar_main");
+            return; // После этой команды ничего не  ъвыполняетс дальше, так как идет
+            // выход? к началу класса? onUpdateEventReceived
+        }
+
         // И выводим его на жкран
-        sendTextMessage("Это вы написали такое: " + inputMessage + "?");
+        // sendTextMessage("Это вы написали такое: " + inputMessage + "?"); //Пока не нужно
         //Тоже выывели еще одно сообщение, для тренировки
         sendTextMessage("Что нового?");
 
@@ -38,11 +47,16 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         sendTextButtonsMessage(
                 "У вас все хорошо?!",
                 "Да!!!", "yesButton",
-                "Нет!! :((" , "stopButton"
+                "Нет!! :((" , "noButton"
 
         );
-        // Высылаем фотосообщение
-        sendPhotoMessage("avatar_main");
+
+        String buttonPressed = getCallbackQueryButtonKey();
+
+        if (buttonPressed.equals("noButton")){
+            sendTextMessage("Вы нажали кнопку Нет");
+        }
+
 
     }
 
