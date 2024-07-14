@@ -28,6 +28,12 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         // Принимаем на вход сообщение, которое пишет пользователь
         String inputMessage = getMessageText();
 
+        String buttonPressed = getCallbackQueryButtonKey();
+        if (buttonPressed.equals("noButton")){
+            sendTextMessage("Вы нажали кнопку Нет");
+            return;
+        }
+
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
         sendTextMessage("_Привет_");  // Делаю текст наклонным в телеграмме
 
@@ -51,11 +57,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
         );
 
-        String buttonPressed = getCallbackQueryButtonKey();
 
-        if (buttonPressed.equals("noButton")){
-            sendTextMessage("Вы нажали кнопку Нет");
-        }
 
 
     }
