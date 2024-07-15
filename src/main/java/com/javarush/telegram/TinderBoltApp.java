@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class TinderBoltApp extends MultiSessionTelegramBot {
     public static final String TELEGRAM_BOT_NAME = "ep_java_tinder_bot"; //TODO: добавь имя бота в кавычках
     public static final String TELEGRAM_BOT_TOKEN = "7431471262:AAEb-1mt5_xPxnDk5MZ4IhwyvqJ09E_b3ww"; //TODO: добавь токен бота в кавычках
-    public static final String OPEN_AI_TOKEN = "4dws6NYyD0BDK2ufp71ZJFkblB3TCC3tppbmX6OYmhSFydbM"; //TODO: добавь токен ChatGPT в кавычках
+    public static final String OPEN_AI_TOKEN = "gpt:4dws6NYyD0BDK2ufp71ZJFkblB3TCC3tppbmX6OYmhSFydbM"; //TODO: добавь токен ChatGPT в кавычках
 
     // Создаю переменную для ощения с Чатом
     private  ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
@@ -32,35 +32,44 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     public void onUpdateEventReceived(Update update) {
         //TODO: основной функционал бота будем писать здесь
         // Выводим сообщение от бота
-        // Принимаем на вход сообщение, которое пишет пользователь
+
+        // 20240714Принимаем на вход сообщение, которое пишет пользователь
+        // 20240715Любое сообщение считается. Любые символы, которые пользователь пишет в телеграм
+        // и потом нажимает ввод
         String inputMessage = getMessageText();
 
-        // Обрабатываю вызов команды /start
+        // 20240714Обрабатываю вызов команды /start
         if(inputMessage.equals("/start")) {
+            //20240715 Устанавляваем режим работы
             currentMode = DialogMode.MAIN; // Основной режим работы
-            // Высылаем фотосообщение
+            // 20240714Высылаем фотосообщение
             sendPhotoMessage("main");
-            // Читаем файл с командами и выводим его пользователю
+            // 20240714Читаем файл с командами и выводим его пользователю
             String greetingText = loadMessage("main");
             sendTextMessage(greetingText);
-            return; // После этой команды ничего не  ъвыполняетс дальше, так как идет
+            return; //20240714 После этой команды ничего не  ъвыполняетс дальше, так как идет
             // выход? к началу класса? onUpdateEventReceived
         }
 
 
-        // Обрабатывваю вызов команды /gpt
+        //20240715 Обрабатывваю вызов команды /gpt
         if(inputMessage.equals("/gpt")){
-            // Меняю режим на ражим работвы с чатом GPT
-            currentMode = DialogMode.GPT;
-            // Высылаем фотосообщение
+            //20240715 Меняю режим на ражим работвы с чатом GPT
+            currentMode = DialogMode.GPT; //20240715 Режим работы с Чатом
+            //20240715 Высылаем фотосообщение
             sendPhotoMessage("gpt");
             sendTextMessage("Ваше сообщение для *ChatGPT*");
             return;
-            // выход? к началу класса? onUpdateEventReceived
+            //20240715 выход? к началу класса? onUpdateEventReceived
         }
 
-        // Проверяем, если мы вошли в режим Чата, то посылаю последующие сообщения в Чат
+        //20240715 Проверяем, если мы вошли в режим Чата, то посылаю последующие сообщения в Чат
         if (currentMode == DialogMode.GPT){
+            // 20240715 Посылаем запрос в Чат и присваеваем его ответ в переменную answerGPT
+            // Почему-то пахнет аинхронщиной...
+            String answerGPT = chatGPT.sendMessage("Ответь на вопрос: ", inputMessage);
+            sendTextMessage(answerGPT);
+            return; // 20240715 Не забывать return!!! Иначе будут вызываться все последующие строки (команды)!!!
 
         }
         String buttonPressed = getCallbackQueryButtonKey();
