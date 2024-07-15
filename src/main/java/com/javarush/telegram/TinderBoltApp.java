@@ -65,9 +65,13 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
         //20240715 Проверяем, если мы вошли в режим Чата, то посылаю последующие сообщения в Чат
         if (currentMode == DialogMode.GPT){
+            //20240715 Загружаем сообщение для Чата, что бы он отвечал корректнее
+            //Сообщение хранится в отдельноем файле
+            // ToDo: Зачем разные функции(?) Зачем вообщение в файлах, а не в коде?
+            String questionPromtForGPT = loadPrompt("gpt");
             // 20240715 Посылаем запрос в Чат и присваеваем его ответ в переменную answerGPT
             // Почему-то пахнет аинхронщиной...
-            String answerGPT = chatGPT.sendMessage("Ответь на вопрос: ", inputMessage);
+            String answerGPT = chatGPT.sendMessage("Дай полный и точный ответ на вопрос: ", inputMessage);
             sendTextMessage(answerGPT);
             return; // 20240715 Не забывать return!!! Иначе будут вызываться все последующие строки (команды)!!!
 
