@@ -47,6 +47,11 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // 20240714Читаем файл с командами и выводим его пользователю
             String greetingText = loadMessage("main");
             sendTextMessage(greetingText);
+            // Выводим меню слева от поля ввода текста.
+            // ToDo: А как быть, если зашли не через /start?
+            showMainMenu(
+                    "Начало работы", "/start",
+                    "Общение с ChatGPT", "/gpt" );
             return; //20240714 После этой команды ничего не  ъвыполняетс дальше, так как идет
             // выход? к началу класса? onUpdateEventReceived
         }
