@@ -51,7 +51,11 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // ToDo: А как быть, если зашли не через /start?
             showMainMenu(
                     "Начало работы", "/start",
-                    "Общение с ChatGPT", "/gpt" );
+                    "Генерация Tinder-профля ", "/profile",
+                    "Cообщение для знакомства", "/opener",
+                    "Переписка от вашего имени", "/message",
+                    "Переписка со звездами", "/date",
+                    "Общение с ChatGPT", "/gpt");
             return; //20240714 После этой команды ничего не  ъвыполняетс дальше, так как идет
             // выход? к началу класса? onUpdateEventReceived
         }
