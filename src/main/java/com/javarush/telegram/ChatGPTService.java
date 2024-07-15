@@ -71,7 +71,7 @@ public class ChatGPTService {
     private String sendMessagesToChatGPT(){
         ChatCompletion chatCompletion = ChatCompletion.builder()
                 //20240715 Можно поменять тип чата, есго скорость и умность
-                .model(ChatCompletion.Model.GPT4Turbo.getName()) // GPT4Turbo or GPT_3_5_TURBO
+                .model(ChatCompletion.Model.GPT_3_5_TURBO.getName()) // GPT4Turbo or GPT_3_5_TURBO
                 .messages(messageHistory)
                 .maxTokens(3000)
                 .temperature(0.9)
