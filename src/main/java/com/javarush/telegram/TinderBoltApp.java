@@ -71,7 +71,9 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             String questionPromtForGPT = loadPrompt("gpt");
             // 20240715 Посылаем запрос в Чат и присваеваем его ответ в переменную answerGPT
             // Почему-то пахнет аинхронщиной...
-            String answerGPT = chatGPT.sendMessage("Дай полный и точный ответ на вопрос: ", inputMessage);
+            // Вставили из файла, что бы не сильно загружать код сообщениями
+            // В отдельном файле мможно улучшить, удлиннить и тд
+            String answerGPT = chatGPT.sendMessage(questionPromtForGPT, inputMessage);
             sendTextMessage(answerGPT);
             return; // 20240715 Не забывать return!!! Иначе будут вызываться все последующие строки (команды)!!!
 
