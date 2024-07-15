@@ -16,8 +16,12 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     public static final String TELEGRAM_BOT_TOKEN = "7431471262:AAEb-1mt5_xPxnDk5MZ4IhwyvqJ09E_b3ww"; //TODO: добавь токен бота в кавычках
     public static final String OPEN_AI_TOKEN = "4dws6NYyD0BDK2ufp71ZJFkblB3TCC3tppbmX6OYmhSFydbM"; //TODO: добавь токен ChatGPT в кавычках
 
-
+    // Создаю переменную для ощения с Чатом
     private  ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
+    //Создаю переменную для Dialog mode. Она хранит текущий режим диалога. Тип enum.
+    // Когда будет вызЫватьсЯ команда для смены режима, то вызаваем данную переменную
+    // И меняем режимы
+    private DialogMode currentMode;
 
 
     public TinderBoltApp() {
@@ -30,7 +34,10 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         // Выводим сообщение от бота
         // Принимаем на вход сообщение, которое пишет пользователь
         String inputMessage = getMessageText();
+
+        // Обрабатываю вызов команды /start
         if(inputMessage.equals("/start")) {
+            currentMode = DialogMode.MAIN; // Основной режим работы
             // Высылаем фотосообщение
             sendPhotoMessage("main");
             // Читаем файл с командами и выводим его пользователю
@@ -40,14 +47,21 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // выход? к началу класса? onUpdateEventReceived
         }
 
+
+        // Обрабатывваю вызов команды /gpt
         if(inputMessage.equals("/gpt")){
+            // Меняю режим на ражим работвы с чатом GPT
+            currentMode = DialogMode.GPT;
             // Высылаем фотосообщение
             sendPhotoMessage("gpt");
-            // Читаем файл с командами и выводим его пользователю
-            String greetingText = loadMessage("main");
-            sendTextMessage(greetingText);
-            return; // После этой команды ничего не  ъвыполняетс дальше, так как идет
+            sendTextMessage("Ваше сообщение для *ChatGPT*");
+            return;
             // выход? к началу класса? onUpdateEventReceived
+        }
+
+        // Проверяем, если мы вошли в режим Чата, то посылаю последующие сообщения в Чат
+        if (currentMode == DialogMode.GPT){
+
         }
         String buttonPressed = getCallbackQueryButtonKey();
 
