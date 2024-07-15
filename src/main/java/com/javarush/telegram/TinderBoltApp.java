@@ -16,6 +16,10 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     public static final String TELEGRAM_BOT_TOKEN = "7431471262:AAEb-1mt5_xPxnDk5MZ4IhwyvqJ09E_b3ww"; //TODO: добавь токен бота в кавычках
     public static final String OPEN_AI_TOKEN = "4dws6NYyD0BDK2ufp71ZJFkblB3TCC3tppbmX6OYmhSFydbM"; //TODO: добавь токен ChatGPT в кавычках
 
+
+    private  ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
+
+
     public TinderBoltApp() {
         super(TELEGRAM_BOT_NAME, TELEGRAM_BOT_TOKEN);
     }
@@ -35,7 +39,18 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return; // После этой команды ничего не  ъвыполняетс дальше, так как идет
             // выход? к началу класса? onUpdateEventReceived
         }
+
+        if(inputMessage.equals("/gpt")){
+            // Высылаем фотосообщение
+            sendPhotoMessage("gpt");
+            // Читаем файл с командами и выводим его пользователю
+            String greetingText = loadMessage("main");
+            sendTextMessage(greetingText);
+            return; // После этой команды ничего не  ъвыполняетс дальше, так как идет
+            // выход? к началу класса? onUpdateEventReceived
+        }
         String buttonPressed = getCallbackQueryButtonKey();
+
         if (buttonPressed.equals("noButton")){
             sendTextMessage("Вы нажали кнопку Нет");
             return;
