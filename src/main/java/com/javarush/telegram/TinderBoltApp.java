@@ -1,3 +1,5 @@
+//t.me/ep_java_tinder_bot.
+//Учебный бот от javaRush
 package com.javarush.telegram;
 
 import com.javarush.telegram.ChatGPTService;
@@ -13,8 +15,12 @@ import java.util.ArrayList;
 
 public class TinderBoltApp extends MultiSessionTelegramBot {
     public static final String TELEGRAM_BOT_NAME = "ep_java_tinder_bot"; //TODO: добавь имя бота в кавычках
-    public static final String TELEGRAM_BOT_TOKEN = "7431471262:AAEb-1mt5_xPxnDk5MZ4IhwyvqJ09E_b3ww"; //TODO: добавь токен бота в кавычках
-    public static final String OPEN_AI_TOKEN = "gpt:4dws6NYyD0BDK2ufp71ZJFkblB3TCC3tppbmX6OYmhSFydbM"; //TODO: добавь токен ChatGPT в кавычках
+
+    //TODO: добавь токен бота в кавычках
+    public static final String TELEGRAM_BOT_TOKEN = "7431471262:AAEb-1mt5_xPxnDk5MZ4IhwyvqJ09E_b3ww";
+
+    //TODO: добавь токен ChatGPT в кавычках
+    public static final String OPEN_AI_TOKEN = "gpt:4dws6NYyD0BDK2ufp71ZJFkblB3TCC3tppbmX6OYmhSFydbM";
 
     // Создаю переменную для ощения с Чатом
     private  ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
@@ -67,7 +73,13 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             currentMode = DialogMode.GPT; //20240715 Режим работы с Чатом
             //20240715 Высылаем фотосообщение
             sendPhotoMessage("gpt");
-            sendTextMessage("Ваше сообщение для *ChatGPT*");
+
+            //20240715 Лучше текст в отдельном файле, так как уод менять не нужно, код не сломается.
+            //На самом деле - у этом есть что-то ... Что бы лишний раз не лезть в файлы
+            //Можно в файл вставлять не только просто текст, но и смайлики и выделения текста
+            //Текстовые данные рекомендуется выносить отдельно, что бы не мешать читать Код
+            String messageForGPT = loadMessage("gpt");
+            sendTextMessage(messageForGPT);
             return;
             //20240715 выход? к началу класса? onUpdateEventReceived
         }
