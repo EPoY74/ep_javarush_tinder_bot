@@ -46,7 +46,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
         // 20240714Обрабатываю вызов команды /start
         if(inputMessage.equals("/start")) {
-            //20240715 Устанавляваем режим работы
+            //20240715 Устанавливаем режим работы
             currentMode = DialogMode.MAIN; // Основной режим работы
             // 20240714Высылаем фотосообщение
             sendPhotoMessage("main");
@@ -62,7 +62,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                     "Переписка от вашего имени \uD83D\uDE08", "/message",
                     "Переписка со звездами \uD83D\uDD25", "/date",
                     "Общение с ChatGPT \uD83E\uDDE0", "/gpt");
-            return; //20240714 После этой команды ничего не  ъвыполняетс дальше, так как идет
+            return; //20240714 После этой команды ничего не выполняется дальше, так как идет
             // выход? к началу класса? onUpdateEventReceived
         }
 
@@ -99,6 +99,33 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return; // 20240715 Не забывать return!!! Иначе будут вызываться все последующие строки (команды)!!!
 
         }
+
+
+        // Если введена команда /date то начинаем работать
+        if (inputMessage.equals("/date")){
+            // устанавливаем режим /date
+            currentMode = DialogMode.DATE;
+            // высылаем сообщение для date
+            sendPhotoMessage("date");
+            // Читаю из файла сообщение для date
+            String messageForDate = loadMessage("date");
+            // Вывожу приветственный текст в консоль
+            //sendTextMessage(messageForDate);
+            sendTextMessage("Выберите девушку для общения");
+
+            return;
+        }
+
+
+        if (currentMode == DialogMode.DATE){
+            // Второе сообщение отправляем Чату и записываю его ответ в поле answerGPT
+            String answerGpt = chatGPT.sendMessage("Диалог с девушкой", inputMessage);
+            // Ответ Чата присылаю в Телеграм пользователя
+            sendTextMessage(answerGpt);
+            // Не забываем писать return, что бы не выполнялись дальнейшие действия
+            return;
+        }
+
         String buttonPressed = getCallbackQueryButtonKey();
 
         if (buttonPressed.equals("noButton")){
@@ -107,9 +134,9 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         }
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
         sendTextMessage("_Привет_");  // Делаю текст наклонным в телеграмме
-        // И выводим его на жкран
+        // И выводим его на экран
         // sendTextMessage("Это вы написали такое: " + inputMessage + "?"); //Пока не нужно
-        //Тоже выывели еще одно сообщение, для тренировки
+        //Тоже вывели еще одно сообщение, для тренировки
         sendTextMessage("Что нового?");
         // выводим сообщение с кнопками
         sendTextButtonsMessage(
