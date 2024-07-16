@@ -116,16 +116,49 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
              sendTextButtonsMessage(
                     "Выберите девушку, которую хотите пригласить на свидание",
                     "Ариана Гранде", "date_grande",
-                     "Марго Робби", "date_robby",
-                     "Зендея", "date_zendeya",
+                     "Марго Робби", "date_robbie",
+                     "Зендея", "date_zendaya",
                      "Райан Гослинг", "date_gosling",
-                     "Том Харди", "date_khardy"
+                     "Том Харди", "date_hardy"
             );
             return;
         }
 
 
         if (currentMode == DialogMode.DATE){
+            // Обработчик для нажатых кнопок
+            // Считываю какая кнопка нажата
+            String buttonQuery = getCallbackQueryButtonKey();
+            //Обрабатываем сами нажатия.
+            if (buttonQuery.equals("date_grande")){
+                // вывожу в=фотографию в чат
+                sendPhotoMessage("date_grande");
+                return; // возврат
+            }
+
+            if (buttonQuery.equals("date_robbie")){
+                // вывожу в=фотографию в чат
+                sendPhotoMessage("date_robbie");
+                return; // возврат
+            }
+
+            if (buttonQuery.equals("date_zendaya")){
+                // вывожу в=фотографию в чат
+                sendPhotoMessage("date_zendaya");
+                return; // возврат
+            }
+
+            if (buttonQuery.equals("date_gosling")){
+                // вывожу в=фотографию в чат
+                sendPhotoMessage("date_gosling");
+                return; // возврат
+            }
+
+            if (buttonQuery.equals("date_hardy")){
+                // вывожу в=фотографию в чат
+                sendPhotoMessage("date_hardy");
+                return; // возврат
+            }
             // Второе сообщение отправляем Чату и записываю его ответ в поле answerGPT
             String answerGpt = chatGPT.sendMessage("Диалог с девушкой", inputMessage);
             // Ответ Чата присылаю в Телеграм пользователя
