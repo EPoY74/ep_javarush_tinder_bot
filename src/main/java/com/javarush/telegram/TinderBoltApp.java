@@ -66,8 +66,8 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // выход? к началу класса? onUpdateEventReceived
         }
 
-
-        //20240715 Обрабатывваю вызов команды /gpt
+        //20230716 Обрабатываю Чат
+        //20240715 Обрабатываю вызов команды /gpt
         if(inputMessage.equals("/gpt")){
             //20240715 Меняю режим на ражим работвы с чатом GPT
             currentMode = DialogMode.GPT; //20240715 Режим работы с Чатом
@@ -100,21 +100,22 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
         }
 
-
-        // Если введена команда /date то начинаем работать
+        // Обрабатываем /date
+        // Если введена команда /date, то начинаем работать
         if (inputMessage.equals("/date")){
             // устанавливаем режим /date
             currentMode = DialogMode.DATE;
             // высылаем сообщение для date
             sendPhotoMessage("date");
+
             // Читаю из файла сообщение для date
             String messageForDate = loadMessage("date");
-            // Вывожу приветственный текст в консоль
-            //sendTextMessage(messageForDate); // Это пока не надо
+            // Вывожу приветственный текст в телеграмм
+            //sendTextMessage(messageForDate); // Пока все же не надо
 
             //sendTextMessage("Выберите девушку для общения"); // Это поменяю на кнопки.
              sendTextButtonsMessage(
-                    "Выберите девушку, которую хотите пригласить на свидание",
+                    messageForDate,
                     "Ариана Гранде", "date_grande",
                      "Марго Робби", "date_robbie",
                      "Зендея", "date_zendaya",
@@ -174,7 +175,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                 //chatGPT.setPrompt("Диалог с девушкой"); // Буду загружать отдельные подготовленные тексты
 
                 //ВНИМАНИЕ ОПТИМИЗАЦИЯ! Опять имена  совпадают, и из=егаем лишнего кода, написав только одну переменную
-                // Имя фала текста, имя фото и наименование кнопки - совпадает. т.е. еспользуем только
+                // Имя фала текста, имя фото и наименование кнопки - совпадает. т.е. используем только
                 // одно наименование переменной buttonQuery
                 String datePromt = loadPrompt(buttonQuery);
                 chatGPT.setPrompt(datePromt); //Скармливаю подготовленную текстовку Чату
@@ -183,7 +184,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
 
             // разбиваю сообщение Чату на 2 части. Делаем метод addMessage, что бы диалог был связанным,
-            // т.е. каждое последующее сообщение дополняло предыдущее и устанавличаем отдельно promt для Чата,
+            // т.е. каждое последующее сообщение дополняло предыдущее и устанавливаем отдельно promt для Чата,
             // т.е. "тему" общения
             //chatGPT.setPrompt("Диалог с девушкой"); // Промт убираем чуть выше, что бы он срабатывал 1 раз во время
             // нажатия кнопки
@@ -193,6 +194,13 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // Не забываем писать return, что бы не выполнялись дальнейшие действия
             return;
         }
+
+        // Обрабатываем /message
+        if (inputMessage.equals("/message")){
+            currentMode = DialogMode.MESSAGE;
+            sendPhotoMessage("message");
+        }
+
 
         String buttonPressed = getCallbackQueryButtonKey();
 
