@@ -199,8 +199,16 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         if (inputMessage.equals("/message")){
             currentMode = DialogMode.MESSAGE;
             sendPhotoMessage("message");
+            sendTextMessage("Пришлите в чат вашу переписку!");
+            return; // когда забываешь писать return - сразу куча мусора последующего вылазит
         }
 
+        if (currentMode == DialogMode.MESSAGE){
+            // Принимаем на вход переписку и отправляем её Чату. Отмет пом=том отправляем Юзверю
+            String answerMessage = chatGPT.sendMessage("Переписка", inputMessage);
+            sendTextMessage(answerMessage);
+            return; //НЕ ЗАБЫВАТЬ
+        }
 
         String buttonPressed = getCallbackQueryButtonKey();
 
