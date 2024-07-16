@@ -28,7 +28,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     // Когда будет вызЫватьсЯ команда для смены режима, то вызаваем данную переменную
     // И меняем режимы
     private DialogMode currentMode = null; //20240716 просмотрел, что надо null указать
-    private ArrayList<String> list= new ArrayList<> (); //объявляю переменную list тип ArrayList - чТО такое - узнать!!!
+    private ArrayList<String> list= new ArrayList<>(); //объявляю переменную list тип ArrayList - чТО такое - узнать!!!
 
 
     public TinderBoltApp() {
@@ -210,12 +210,23 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         if (currentMode == DialogMode.MESSAGE){
             // делаем обработку кнопок
             String queryMessage = getCallbackQueryButtonKey();
-            if (queryMessage.equals("message_")){
-                String promtMessage = loadPrompt(queryMessage); //Передам сразу имя кнопки - названия одинаковые.
-                // Архитектура, однако!
+            if (queryMessage.startsWith("message_")){ // фильтруем, что это именно кнопки ПРОВЕРЯТЬ КОРРЕКТНОСТЬ
+                                                      // МЕТОДА НАЗВАНИЯ!
+//                sendTextMessage(queryMessage);
+                String promtMessage = loadPrompt(queryMessage); //Загружаю промт соответствующей кнопки  для Чата,
+                // передам сразу имя кнопки - названия одинаковые.
+                // Архитектура, о днако!
 
-                // Если кнопка нажата - то отправляем тектом все в Чат, иначе - складируем все в Array
-                String answerMessage = chatGPT.sendMessage(promtMessage, inputMessage);
+                // Склеиваем все сообщения пользователя из array
+                //"\n\n" разделитель
+                //и список вторым параметром. Склеиваем методом join в Классе(?) String
+                // TODO: Узнать, что есть String
+                String userChatHistory = String.join("\n\n", list);
+//                sendTextMessage(userChatHistory);
+//                sendTextMessage(promtMessage);
+
+                // Если кнопка нажата - то отправляем текстом все в Чат, иначе - складируем все в Array
+                String answerMessage = chatGPT.sendMessage(promtMessage, userChatHistory);
                 sendTextMessage(answerMessage);
                 return;
             }
