@@ -27,7 +27,8 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     //Создаю переменную для Dialog mode. Она хранит текущий режим диалога. Тип enum.
     // Когда будет вызЫватьсЯ команда для смены режима, то вызаваем данную переменную
     // И меняем режимы
-    private DialogMode currentMode;
+    private DialogMode currentMode = null; //20240716 просмотрел, что надо null указать
+    private ArrayList<String> list= new ArrayList<> (); //объявляю переменную list тип ArrayList - чТО такое - узнать!!!
 
 
     public TinderBoltApp() {
@@ -199,14 +200,33 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         if (inputMessage.equals("/message")){
             currentMode = DialogMode.MESSAGE;
             sendPhotoMessage("message");
-            sendTextMessage("Пришлите в чат вашу переписку!");
+            //sendTextMessage("Пришлите в чат вашу переписку!"); //меняю сообщение на кнопки
+            sendTextButtonsMessage("Пришлите в чат вашу переписку!",
+                    "Следующее сообщение","message_next",
+                    "Пригласить на свидание","message_date");
             return; // когда забываешь писать return - сразу куча мусора последующего вылазит
         }
 
         if (currentMode == DialogMode.MESSAGE){
-            // Принимаем на вход переписку и отправляем её Чату. Отмет пом=том отправляем Юзверю
-            String answerMessage = chatGPT.sendMessage("Переписка", inputMessage);
-            sendTextMessage(answerMessage);
+            // делаем обработку кнопок
+            String queryMessage = getCallbackQueryButtonKey();
+            if (queryMessage.equals("message_")){
+                String promtMessage = loadPrompt(queryMessage); //Передам сразу имя кнопки - названия одинаковые.
+                // Архитектура, однако!
+
+                // Если кнопка нажата - то отправляем тектом все в Чат, иначе - складируем все в Array
+                String answerMessage = chatGPT.sendMessage(promtMessage, inputMessage);
+                sendTextMessage(answerMessage);
+                return;
+            }
+
+
+            // Принимаем на вход переписку и отправляем её Чату. Ответ потом отправляем Юзверю
+
+//            String answerMessage = chatGPT.sendMessage("Переписка", inputMessage);
+//            sendTextMessage(answerMessage); // пока удрали эти две строчки. Будет работать с Array
+
+            list.add(inputMessage); // Добавляю сообщение user в array
             return; //НЕ ЗАБЫВАТЬ
         }
 
