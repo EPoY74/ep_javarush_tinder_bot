@@ -110,9 +110,17 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // Читаю из файла сообщение для date
             String messageForDate = loadMessage("date");
             // Вывожу приветственный текст в консоль
-            //sendTextMessage(messageForDate);
-            sendTextMessage("Выберите девушку для общения");
+            //sendTextMessage(messageForDate); // Это пока не надо
 
+            //sendTextMessage("Выберите девушку для общения"); // Это поменяю на кнопки.
+             sendTextButtonsMessage(
+                    "Выберите девушку, которую хотите пригласить на свидание",
+                    "Ариана Гранде", "date_grande",
+                     "Марго Робби", "date_robby",
+                     "Зендея", "date_zendeya",
+                     "Райан Гослинг", "date_gosling",
+                     "Том Харди", "date_khardy"
+            );
             return;
         }
 
