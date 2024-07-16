@@ -91,12 +91,16 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             //Сообщение хранится в отдельноем файле
             // ToDo: Зачем разные функции(?) Зачем вообщение в файлах, а не в коде?
             String questionPromtForGPT = loadPrompt("gpt");
+
+            Message msg = sendTextMessage("Подождите, пожалуйста, ChatGPT думает");  // служебное сообщение,
+//                         которое потом заменим на ответ Чата
+
             // 20240715 Посылаем запрос в Чат и присваеваем его ответ в переменную answerGPT
             // Почему-то пахнет аинхронщиной...
             // Вставили из файла, что бы не сильно загружать код сообщениями
             // В отдельном файле мможно улучшить, удлиннить и тд
             String answerGPT = chatGPT.sendMessage(questionPromtForGPT, inputMessage);
-            sendTextMessage(answerGPT);
+            updateTextMessage(msg, answerGPT);
             return; // 20240715 Не забывать return!!! Иначе будут вызываться все последующие строки (команды)!!!
 
         }
@@ -184,6 +188,9 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             }
 
 
+            Message msg = sendTextMessage("Подождите, пожалуйста, собеседник набирает текст");  // служебное сообщение,
+//                         которое потом заменим на ответ Чата
+
             // разбиваю сообщение Чату на 2 части. Делаем метод addMessage, что бы диалог был связанным,
             // т.е. каждое последующее сообщение дополняло предыдущее и устанавливаем отдельно promt для Чата,
             // т.е. "тему" общения
@@ -191,7 +198,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // нажатия кнопки
             String answerGpt = chatGPT.addMessage(inputMessage);
             // Ответ Чата присылаю в Телеграм пользователя
-            sendTextMessage(answerGpt);
+            updateTextMessage(msg, answerGpt);
             // Не забываем писать return, что бы не выполнялись дальнейшие действия
             return;
         }
@@ -222,12 +229,17 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                 //и список вторым параметром. Склеиваем методом join в Классе(?) String
                 // TODO: Узнать, что есть String
                 String userChatHistory = String.join("\n\n", list);
-//                sendTextMessage(userChatHistory);
+
+                Message msg = sendTextMessage("Подождите, пожалуйста, ChatGPT думает");  // служебное сообщение,
+//                         которое потом заменим на ответ Чата
+                // sendTextMessage(userChatHistory);
 //                sendTextMessage(promtMessage);
 
                 // Если кнопка нажата - то отправляем текстом все в Чат, иначе - складируем все в Array
                 String answerMessage = chatGPT.sendMessage(promtMessage, userChatHistory);
-                sendTextMessage(answerMessage);
+                //sendTextMessage(answerMessage);
+                updateTextMessage(msg, answerMessage); // Подменяю служебное сообщение ответом от Чата.
+                // Очень удобная штука!
                 return;
             }
 
