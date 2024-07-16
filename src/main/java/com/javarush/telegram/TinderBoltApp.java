@@ -130,33 +130,32 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // Считываю какая кнопка нажата
             String buttonQuery = getCallbackQueryButtonKey();
             //Обрабатываем сами нажатия.
-            if (buttonQuery.equals("date_grande")){
+
+            if (buttonQuery.equals("date_grande")){ // Название date_grande повторяется 2 раза.
+                                                    // Заменю его на buttonQuery в слудующих обработчиках, тут
+                                                    //  оставлю для примера как есть
                 // вывожу в=фотографию в чат
                 sendPhotoMessage("date_grande");
                 return; // возврат
             }
-
             if (buttonQuery.equals("date_robbie")){
                 // вывожу в=фотографию в чат
-                sendPhotoMessage("date_robbie");
+                sendPhotoMessage(buttonQuery);
                 return; // возврат
             }
-
             if (buttonQuery.equals("date_zendaya")){
                 // вывожу в=фотографию в чат
-                sendPhotoMessage("date_zendaya");
+                sendPhotoMessage(buttonQuery);
                 return; // возврат
             }
-
             if (buttonQuery.equals("date_gosling")){
                 // вывожу в=фотографию в чат
-                sendPhotoMessage("date_gosling");
+                sendPhotoMessage(buttonQuery);
                 return; // возврат
             }
-
             if (buttonQuery.equals("date_hardy")){
                 // вывожу в=фотографию в чат
-                sendPhotoMessage("date_hardy");
+                sendPhotoMessage(buttonQuery);
                 return; // возврат
             }
             // Второе сообщение отправляем Чату и записываю его ответ в поле answerGPT
