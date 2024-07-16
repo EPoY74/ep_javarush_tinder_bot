@@ -131,33 +131,47 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             String buttonQuery = getCallbackQueryButtonKey();
             //Обрабатываем сами нажатия.
 
-            if (buttonQuery.equals("date_grande")){ // Название date_grande повторяется 2 раза.
-                                                    // Заменю его на buttonQuery в слудующих обработчиках, тут
-                                                    //  оставлю для примера как есть
-                // вывожу в=фотографию в чат
-                sendPhotoMessage("date_grande");
-                return; // возврат
-            }
-            if (buttonQuery.equals("date_robbie")){
-                // вывожу в=фотографию в чат
+//            if (buttonQuery.equals("date_grande")){ // Название date_grande повторяется 2 раза.
+//                                                    // Заменю его на buttonQuery в слудующих обработчиках, тут
+//                                                    //  оставлю для примера как есть
+//                // вывожу в=фотографию в чат
+//                sendPhotoMessage("date_grande");
+//                return; // возврат
+//            }
+//            if (buttonQuery.equals("date_robbie")){
+//                // вывожу в=фотографию в чат
+//                sendPhotoMessage(buttonQuery);
+//                return; // возврат
+//            }
+//            if (buttonQuery.equals("date_zendaya")){
+//                // вывожу в=фотографию в чат
+//                sendPhotoMessage(buttonQuery);
+//                return; // возврат
+//            }
+//            if (buttonQuery.equals("date_gosling")){
+//                // вывожу в=фотографию в чат
+//                sendPhotoMessage(buttonQuery);
+//                return; // возврат
+//            }
+//            if (buttonQuery.equals("date_hardy")){
+//                // вывожу в=фотографию в чат
+//                sendPhotoMessage(buttonQuery);
+//                return; // возврат
+//            }
+
+            // Делаем чуть иначе без кучи пустого кода.
+            // Отличный пример оптимизации. Мой код - как я думал, чуть выше.
+
+            // Проверяю, действительно ли нажата кнопка, так как текст довольно индивидуальный у кнопок
+            if (buttonQuery.startsWith("date_")){
+                // вывожу фото, соответсвующее нажатой кнопке (текст в переменной)
                 sendPhotoMessage(buttonQuery);
-                return; // возврат
+                // И высылаю приветственный текст
+                sendTextMessage("Твоя задача пригласитьпартнера на свидание за 5 сообщений! ");
+                return;
             }
-            if (buttonQuery.equals("date_zendaya")){
-                // вывожу в=фотографию в чат
-                sendPhotoMessage(buttonQuery);
-                return; // возврат
-            }
-            if (buttonQuery.equals("date_gosling")){
-                // вывожу в=фотографию в чат
-                sendPhotoMessage(buttonQuery);
-                return; // возврат
-            }
-            if (buttonQuery.equals("date_hardy")){
-                // вывожу в=фотографию в чат
-                sendPhotoMessage(buttonQuery);
-                return; // возврат
-            }
+
+
             // Второе сообщение отправляем Чату и записываю его ответ в поле answerGPT
             String answerGpt = chatGPT.sendMessage("Диалог с девушкой", inputMessage);
             // Ответ Чата присылаю в Телеграм пользователя
