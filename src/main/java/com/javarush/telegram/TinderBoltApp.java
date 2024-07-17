@@ -306,9 +306,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                 case 5:
                     me.goals = inputMessage;
 
-                    sendTextMessage("Что вам не нравится в людях?");
-
-                    //После того, как человек ответил на 3 вопроса - скармливаем все Чату
+                    //После того, как человек ответил на 5 вопросов - скармливаем все Чату
                     String aboutMySelfProfile = me.toString(); // Преобразуем весь объект me в строку
                     // отправляю Чату  и  вывожу результат пользователю
                     // Сейчас буду писать promt из файла. Это была просто проба пера.
@@ -322,7 +320,6 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                     String answerProfileGPT = chatGPT.sendMessage(profilePromt, aboutMySelfProfile);// Отправляю Чату
                     updateTextMessage(msg, answerProfileGPT); // Вывожу сообщение пользователю
                     // и меняю временное сообщение
-
 
                     return;
 
