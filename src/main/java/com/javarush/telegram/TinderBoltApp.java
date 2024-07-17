@@ -296,6 +296,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                     me.hobby = inputMessage;
                     questionCount = 4;
                     sendTextMessage("Что вам не нравится в людях?");
+                    return;
 
                 case 4:
                     me.annoys = inputMessage;
@@ -305,8 +306,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                 case 5:
                     me.goals = inputMessage;
 
-                    sendTextMessage("Что вам не нрасится в людях?");
-
+                    sendTextMessage("Что вам не нравится в людях?");
 
                     //После того, как человек ответил на 3 вопроса - скармливаем все Чату
                     String aboutMySelfProfile = me.toString(); // Преобразуем весь объект me в строку
@@ -315,8 +315,15 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                     //String answerProfileGPT = chatGPT.sendMessage("Сгенерируй мне профиль от Tinder. Информация обо мне ниже: ", aboutMySelfProfile);
 
                     String profilePromt = loadPrompt("profile");
+                    Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает..."); // Выводим сообщение,
+                    // пока Чат думает.
+                    // Потом его заменим на ответ. Это сделано для того, чтобы пользователь не скучал
+
                     String answerProfileGPT = chatGPT.sendMessage(profilePromt, aboutMySelfProfile);// Отправляю Чату
-                    sendTextMessage(answerProfileGPT); // Вывожу сообщение пользователю
+                    updateTextMessage(msg, answerProfileGPT); // Вывожу сообщение пользователю
+                    // и меняю временное сообщение
+
+
                     return;
 
 
