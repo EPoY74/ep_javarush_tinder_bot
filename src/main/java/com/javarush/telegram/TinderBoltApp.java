@@ -262,12 +262,23 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
 
         // обрабатываем /profile
-        if (inputMessage.equals("/profile")){
-            currentMode = DialogMode.PROFILE;
+        if (inputMessage.equals("/profile")){ // обработка команды /profile
+            currentMode = DialogMode.PROFILE; // Устанавливаю текужий режим диалога для вылова второй строки
+            sendPhotoMessage("profile"); // выводим фотографию
+            sendTextMessage("Сообщите информацию о себе."); // Выводим строку с информацией. Стоит рассказать больше.
+            return;
         }
 
-        if (currentMode == DialogMode.PROFILE){
+        if (currentMode == DialogMode.PROFILE){  // Вылавливаю и обрабатываю второе сообщение
+            String aboutMySelfProfile = inputMessage; // Само второе сообщение. Первое - команда /profile
 
+            // отправляю Чату  и  вывожу результат пользователю
+            // sendTextMessage(aboutMySelfProfile);
+
+            //
+            String answerProfileGPT = chatGPT.sendMessage("Сгенерируй мне профиль от Tinder. Информация обо мне ниже: ", aboutMySelfProfile);
+            sendTextMessage(answerProfileGPT); // Вывожу сообщение пользователю
+            return; // Не забывать return!!!! Иначе будет выполняться все подряд.
         }
 
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
