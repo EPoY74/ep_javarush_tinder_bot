@@ -222,7 +222,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 //                sendTextMessage(queryMessage);
                 String promtMessage = loadPrompt(queryMessage); //Загружаю промт соответствующей кнопки  для Чата,
                 // передам сразу имя кнопки - названия одинаковые.
-                // Архитектура, о днако!
+                // Архитектура, однако!
 
                 // Склеиваем все сообщения пользователя из array
                 //"\n\n" разделитель
@@ -259,6 +259,17 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             sendTextMessage("Вы нажали кнопку Нет");
             return;
         }
+
+
+        // обрабатываем /profile
+        if (inputMessage.equals("/profile")){
+            currentMode = DialogMode.PROFILE;
+        }
+
+        if (currentMode == DialogMode.PROFILE){
+
+        }
+
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
         sendTextMessage("_Привет_");  // Делаю текст наклонным в телеграмме
         // И выводим его на экран
