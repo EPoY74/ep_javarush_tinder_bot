@@ -271,43 +271,60 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             me = new UserInfo();  // обновляю переменную, что бы не сохранились старые данные
             questionCount = 1; // Обнуляю счетчик // Gjghfdbkf? htibkb c.lf gbcfnm yjvth djghjcf
 
+            //задаю 1 вопрос
             sendTextMessage("Сколько вам лет? "); // Выводим строку с информацией. Стоит рассказать больше.
             return;
         }
 
         if (currentMode == DialogMode.PROFILE){  // Вылавливаю и обрабатываю второе сообщение
-            if (questionCount == 1){
-                me.age = inputMessage;
 
-                questionCount = 2;
-                sendTextMessage("Кем вы работаете?");
-                return;
+            switch (questionCount){ // переделываем все на switch ToDO: Зачем интересно?
+                case 1:
+                    //Ответ на 1й вопрос
+                    me.age = inputMessage;
+                    questionCount = 2;
+                    // задаю 2 вопрос
+                    sendTextMessage("Кем вы работаете?");
+                    return;
+                case 2: // Цифра - номер вопроса, на который я отвеечаю
+                    // Ответ на 2й вопрос и тд и тп
+                    me.occupation = inputMessage;
+                    questionCount = 3;
+                    sendTextMessage("У вас есть хобби?");
+                    return;
+                case 3:
+                    me.hobby = inputMessage;
+                    questionCount = 4;
+                    sendTextMessage("Что вам не нравится в людях?");
+
+                case 4:
+                    me.annoys = inputMessage;
+                    questionCount = 5;
+                    sendTextMessage("Что вы ждете от свидания, цель знакомства?");
+                    return;
+                case 5:
+                    me.goals = inputMessage;
+
+                    sendTextMessage("Что вам не нрасится в людях?");
+
+
+                    //После того, как человек ответил на 3 вопроса - скармливаем все Чату
+                    String aboutMySelfProfile = me.toString(); // Преобразуем весь объект me в строку
+                    // отправляю Чату  и  вывожу результат пользователю
+                    // Сейчас буду писать promt из файла. Это была просто проба пера.
+                    //String answerProfileGPT = chatGPT.sendMessage("Сгенерируй мне профиль от Tinder. Информация обо мне ниже: ", aboutMySelfProfile);
+
+                    String profilePromt = loadPrompt("profile");
+                    String answerProfileGPT = chatGPT.sendMessage(profilePromt, aboutMySelfProfile);// Отправляю Чату
+                    sendTextMessage(answerProfileGPT); // Вывожу сообщение пользователю
+                    return;
+
+
             }
 
-            if(questionCount  == 2){
-                me.occupation = inputMessage;
-
-                questionCount = 3;
-                sendTextMessage("У вас есть хобби?");
-                return;
-            }
 
             if (questionCount == 3){
-                me.hobby = inputMessage;
 
-                questionCount = 4;
-
-
-                //После того, как человек ответил на 3 вопроса - скармливаем все Чату
-                String aboutMySelfProfile = me.toString(); // Преобразуем весь объект me в строку
-                // отправляю Чату  и  вывожу результат пользователю
-                // Сейчас буду писать promt из файла. Это была просто проба пера.
-                //String answerProfileGPT = chatGPT.sendMessage("Сгенерируй мне профиль от Tinder. Информация обо мне ниже: ", aboutMySelfProfile);
-
-                String profilePromt = loadPrompt("profile");
-                String answerProfileGPT = chatGPT.sendMessage(profilePromt, aboutMySelfProfile);// Отправляю Чату
-                sendTextMessage(answerProfileGPT); // Вывожу сообщение пользователю
-                return;
             }
 
             return; // Не забывать return!!!! Иначе будет выполняться все подряд.
