@@ -26,6 +26,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     private DialogMode currentMode = null; //20240716 просмотрел, что надо null указать
     private ArrayList<String> list= new ArrayList<>(); //объявляю переменную list тип ArrayList - чТО такое - узнать!!!
     private UserInfo meProfile;
+    private UserInfo partnerOpener;
     private int questionCount;
 
 
@@ -320,22 +321,58 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         if (inputMessage.equals("/opener")){
             currentMode = DialogMode.OPENER;
             sendPhotoMessage("opener");
-            sendTextMessage("Пришли информацию о человеке для знакомства! ");
+
+            partnerOpener = new UserInfo();
+            questionCount = 1;
+            sendTextMessage("Имя девушки:");
             return;
         }
 
         if (currentMode == DialogMode.OPENER){
-            String aboutFriendOpener = inputMessage;
+            // String aboutFriendOpener = inputMessage; // Пока уберу
 
-            //TODO: Этот код повторяется много раз. Нужно его вынести в отдельный модуль.
-            String profileOpener = loadPrompt("opener");
-            Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает..."); // Выводим сообщение,
-            // пока Чат думает. Потом его заменим на ответ. Это сделано для того, чтобы пользователь не скучал
+            switch (questionCount){ // переделываем все на switch ToDO: Зачем интересно?
+                case 1:
+                    //Ответ на 1й вопрос
+                    partnerOpener.name = inputMessage;
+                    questionCount = 2;
+                    // задаю 2 вопрос
+                    sendTextMessage("Сколько ей/ему  лет");
+                    return;
+                case 2: // Цифра - номер вопроса, на который я отвеечаю
+                    // Ответ на 2й вопрос и тд и тп
+                    partnerOpener.age = inputMessage;
+                    questionCount = 3;
+                    sendTextMessage("У него/неё есть хобби?");
+                    return;
+                case 3:
+                    partnerOpener.hobby = inputMessage;
+                    questionCount = 4;
+                    sendTextMessage("Кем работает?");
+                    return;
 
-            String answerProfileGPT = chatGPT.sendMessage(profileOpener, aboutFriendOpener);// Отправляю Чату
-            updateTextMessage(msg, answerProfileGPT); // Вывожу сообщение пользователю
-            // и меняю временное сообщение
-            return;
+                case 4:
+                    partnerOpener.occupation = inputMessage;
+                    questionCount = 5;
+                    sendTextMessage("Что вы ждете от свидания, цель знакомства?");
+                    return;
+                case 5:
+                    partnerOpener.goals = inputMessage;
+
+                    String aboutPartnerOpener = partnerOpener.toString(); // Преобразуем весь объект me в строку
+                    // отправляю Чату  и  вывожу результат пользователю
+                    // Сейчас буду писать promt из файла. Это была просто проба пера.
+                    //String answerProfileGPT = chatGPT.sendMessage("Сгенерируй мне профиль от Tinder. Информация обо мне ниже: ", aboutMySelfProfile);
+
+                    //TODO: Этот код повторяется много раз. Нужно его вынести в отдельный модуль.String profileOpener = loadPrompt("opener");
+                    Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает..."); // Выводим сообщение,
+                    // пока Чат думает. Потом его заменим на ответ. Это сделано для того, чтобы пользователь не скучал
+
+                    String profileOpener = loadPrompt("opener");
+                    String answerProfileGPT = chatGPT.sendMessage(profileOpener, aboutPartnerOpener);// Отправляю Чату
+                    updateTextMessage(msg, answerProfileGPT); // Вывожу сообщение пользователю
+                    // и меняю временное сообщение
+                    return;
         }
 
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
