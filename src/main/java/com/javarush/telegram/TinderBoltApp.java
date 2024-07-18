@@ -321,6 +321,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             currentMode = DialogMode.OPENER;
             sendPhotoMessage("opener");
             sendTextMessage("Пришли информацию о человеке для знакомства! ");
+            return;
         }
 
         if (currentMode == DialogMode.OPENER){
