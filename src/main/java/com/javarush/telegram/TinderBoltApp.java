@@ -85,7 +85,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
         }
 
         //20240715 Проверяем, если мы вошли в режим Чата, то посылаю последующие сообщения в Чат
-        if (currentMode == DialogMode.GPT){
+        if (currentMode == DialogMode.GPT && !isMessageCommand()){
             //20240715 Загружаем сообщение для Чата, что бы он отвечал корректнее
             //Сообщение хранится в отдельноем файле
             // ToDo: Зачем разные функции(?) Зачем вообщение в файлах, а не в коде?
@@ -168,7 +168,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // Отличный пример оптимизации. Мой код - как я думал, чуть выше.
 
             // Проверяю, действительно ли нажата кнопка, так как текст довольно индивидуальный у кнопок
-            if (buttonQuery.startsWith("date_")){
+            if (buttonQuery.startsWith("date_") && !isMessageCommand()){
                 // вывожу фото, соответсвующее нажатой кнопке (текст в переменной)
                 sendPhotoMessage(buttonQuery);
                 // И высылаю приветственный текст
@@ -213,7 +213,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return; // когда забываешь писать return - сразу куча мусора последующего вылазит
         }
 
-        if (currentMode == DialogMode.MESSAGE){
+        if (currentMode == DialogMode.MESSAGE && !isMessageCommand()){
             // делаем обработку кнопок
             String queryMessage = getCallbackQueryButtonKey();
             if (queryMessage.startsWith("message_")){ // фильтруем, что это именно кнопки ПРОВЕРЯТЬ КОРРЕКТНОСТЬ
@@ -328,10 +328,10 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return;
         }
 
-        if (currentMode == DialogMode.OPENER){
+        if (currentMode == DialogMode.OPENER  && !isMessageCommand()){
             // String aboutFriendOpener = inputMessage; // Пока уберу
 
-            switch (questionCount){ // переделываем все на switch ToDO: Зачем интересно?
+            switch (questionCount) { // переделываем все на switch ToDO: Зачем интересно?
                 case 1:
                     //Ответ на 1й вопрос
                     partnerOpener.name = inputMessage;
@@ -373,6 +373,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                     updateTextMessage(msg, answerProfileGPT); // Вывожу сообщение пользователю
                     // и меняю временное сообщение
                     return;
+            }
         }
 
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
