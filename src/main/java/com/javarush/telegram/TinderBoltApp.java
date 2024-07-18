@@ -19,7 +19,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     public static final String OPEN_AI_TOKEN = "gpt:4dws6NYyD0BDK2ufp71ZJFkblB3TCC3tppbmX6OYmhSFydbM";
 
     // Создаю переменную для ощения с Чатом
-    private  ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
+    private  final ChatGPTService chatGPT = new ChatGPTService(OPEN_AI_TOKEN);
     //Создаю переменную для Dialog mode. Она хранит текущий режим диалога. Тип enum.
     // Когда будет вызЫватьсЯ команда для смены режима, то вызаваем данную переменную
     // И меняем режимы
@@ -116,9 +116,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             // Читаю из файла сообщение для date
             String messageForDate = loadMessage("date");
             // Вывожу приветственный текст в телеграмм
-            //sendTextMessage(messageForDate); // Пока все же не надо
 
-            //sendTextMessage("Выберите девушку для общения"); // Это поменяю на кнопки.
              sendTextButtonsMessage(
                     messageForDate,
                     "Ариана Гранде", "date_grande",
@@ -173,7 +171,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
                 // вывожу фото, соответсвующее нажатой кнопке (текст в переменной)
                 sendPhotoMessage(buttonQuery);
                 // И высылаю приветственный текст
-                sendTextMessage("Отличный выбор! \nТвоя задача пригласить партнера на свидание ❤\uFE0F за 5 сообщений! ");
+                sendTextMessage("Отличный выбор! \nТвоя задача пригласить партнера на свидание ❤ за 5 сообщений! ");
                 // Убрали промт для Чата сюда (см. чуть ниже комменты).
                 // Вызывается один раз только.
                 // Все дальнейшее общение происходит ниже
@@ -245,9 +243,6 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
 
             // Принимаем на вход переписку и отправляем её Чату. Ответ потом отправляем Юзверю
-
-//            String answerMessage = chatGPT.sendMessage("Переписка", inputMessage);
-//            sendTextMessage(answerMessage); // пока удрали эти две строчки. Будет работать с Array
 
             list.add(inputMessage); // Добавляю сообщение user в array
             return; //НЕ ЗАБЫВАТЬ
