@@ -2,10 +2,6 @@
 //Учебный бот от javaRush
 package com.javarush.telegram;
 
-import com.javarush.telegram.ChatGPTService;
-import com.javarush.telegram.DialogMode;
-import com.javarush.telegram.MultiSessionTelegramBot;
-import com.javarush.telegram.UserInfo;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -29,7 +25,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
     // И меняем режимы
     private DialogMode currentMode = null; //20240716 просмотрел, что надо null указать
     private ArrayList<String> list= new ArrayList<>(); //объявляю переменную list тип ArrayList - чТО такое - узнать!!!
-    private UserInfo me;
+    private UserInfo meProfile;
     private int questionCount;
 
 
@@ -260,7 +256,7 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             currentMode = DialogMode.PROFILE; // Устанавливаю текужий режим диалога для вылова второй строки
             sendPhotoMessage("profile"); // выводим фотографию
 
-            me = new UserInfo();  // обновляю переменную, что бы не сохранились старые данные
+            meProfile = new UserInfo();  // обновляю переменную, что бы не сохранились старые данные
             questionCount = 1; // Обнуляю счетчик // Gjghfdbkf? htibkb c.lf gbcfnm yjvth djghjcf
 
             //задаю 1 вопрос
@@ -273,78 +269,76 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             switch (questionCount){ // переделываем все на switch ToDO: Зачем интересно?
                 case 1:
                     //Ответ на 1й вопрос
-                    me.age = inputMessage;
+                    meProfile.age = inputMessage;
                     questionCount = 2;
                     // задаю 2 вопрос
                     sendTextMessage("Кем вы работаете?");
                     return;
                 case 2: // Цифра - номер вопроса, на который я отвеечаю
                     // Ответ на 2й вопрос и тд и тп
-                    me.occupation = inputMessage;
+                    meProfile.occupation = inputMessage;
                     questionCount = 3;
                     sendTextMessage("У вас есть хобби?");
                     return;
                 case 3:
-                    me.hobby = inputMessage;
+                    meProfile.hobby = inputMessage;
                     questionCount = 4;
                     sendTextMessage("Что вам не нравится в людях?");
                     return;
 
                 case 4:
-                    me.annoys = inputMessage;
+                    meProfile.annoys = inputMessage;
                     questionCount = 5;
                     sendTextMessage("Что вы ждете от свидания, цель знакомства?");
                     return;
                 case 5:
-                    me.goals = inputMessage;
+                    meProfile.goals = inputMessage;
 
                     //После того, как человек ответил на 5 вопросов - скармливаем все Чату
-                    String aboutMySelfProfile = me.toString(); // Преобразуем весь объект me в строку
+                    String aboutMySelfProfile = meProfile.toString(); // Преобразуем весь объект me в строку
                     // отправляю Чату  и  вывожу результат пользователю
                     // Сейчас буду писать promt из файла. Это была просто проба пера.
                     //String answerProfileGPT = chatGPT.sendMessage("Сгенерируй мне профиль от Tinder. Информация обо мне ниже: ", aboutMySelfProfile);
 
                     String profilePromt = loadPrompt("profile");
                     Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает..."); // Выводим сообщение,
-                    // пока Чат думает.
-                    // Потом его заменим на ответ. Это сделано для того, чтобы пользователь не скучал
+                    // пока Чат думает. Потом его заменим на ответ. Это сделано для того, чтобы пользователь не скучал
 
                     String answerProfileGPT = chatGPT.sendMessage(profilePromt, aboutMySelfProfile);// Отправляю Чату
                     updateTextMessage(msg, answerProfileGPT); // Вывожу сообщение пользователю
                     // и меняю временное сообщение
-
                     return;
-
-
             }
             return; // Не забывать return!!!! Иначе будет выполняться все подряд.
         }
 
 
+        // Обрабатываю последнюю команду Opener
+        // Комментариев писать не буду, так как все будет аналогично предыдущим блокам
+        // Что-то интересное - буду записывать
 
         if (inputMessage.equals("/opener")){
             currentMode = DialogMode.OPENER;
             sendPhotoMessage("opener");
-            sendTextMessage("Сейчас мы напишем вас приветственное сообщение!");
+            sendTextMessage("Пришли информацию о человеке для знакомства! ");
         }
 
         if (currentMode == DialogMode.OPENER){
+            String aboutFriendOpener = inputMessage;
 
+            //TODO: Этот код повторяется много раз. Нужно его вынести в отдельный модуль.
+            String profileOpener = loadPrompt("opener");
+            Message msg = sendTextMessage("Подождите пару секунд - ChatGPT думает..."); // Выводим сообщение,
+            // пока Чат думает. Потом его заменим на ответ. Это сделано для того, чтобы пользователь не скучал
+
+            String answerProfileGPT = chatGPT.sendMessage(profileOpener, aboutFriendOpener);// Отправляю Чату
+            updateTextMessage(msg, answerProfileGPT); // Вывожу сообщение пользователю
+            // и меняю временное сообщение
+            return;
         }
 
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
-        sendTextMessage("_Привет_");  // Делаю текст наклонным в телеграмме
-        // И выводим его на экран
-        // sendTextMessage("Это вы написали такое: " + inputMessage + "?"); //Пока не нужно
-        //Тоже вывели еще одно сообщение, для тренировки
-        sendTextMessage("Что нового?");
-        // выводим сообщение с кнопками
-        sendTextButtonsMessage(
-                "У вас все хорошо?!",
-                "Да!!!", "yesButton",
-                "Нет!! :((" , "noButton"
-
-        );
+        sendTextMessage("Если ты видишь этот спам - то значит ты забыл написать return в одном из обработчиков!!!");  // Делаю текст наклонным в телеграмме
     }
 
     public static void main(String[] args) throws TelegramApiException {
