@@ -255,14 +255,6 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
             return; //НЕ ЗАБЫВАТЬ
         }
 
-        String buttonPressed = getCallbackQueryButtonKey();
-
-        if (buttonPressed.equals("noButton")){
-            sendTextMessage("Вы нажали кнопку Нет");
-            return;
-        }
-
-
         // обрабатываем /profile
         if (inputMessage.equals("/profile")){ // обработка команды /profile
             currentMode = DialogMode.PROFILE; // Устанавливаю текужий режим диалога для вылова второй строки
@@ -325,13 +317,19 @@ public class TinderBoltApp extends MultiSessionTelegramBot {
 
 
             }
-
-
-            if (questionCount == 3){
-
-            }
-
             return; // Не забывать return!!!! Иначе будет выполняться все подряд.
+        }
+
+
+
+        if (inputMessage.equals("/opener")){
+            currentMode = DialogMode.OPENER;
+            sendPhotoMessage("opener");
+            sendTextMessage("Сейчас мы напишем вас приветственное сообщение!");
+        }
+
+        if (currentMode == DialogMode.OPENER){
+
         }
 
         sendTextMessage("*Привет*"); // Делаю текст жирным в телеграмме
